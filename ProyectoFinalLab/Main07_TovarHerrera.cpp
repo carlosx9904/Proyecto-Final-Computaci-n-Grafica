@@ -1,7 +1,5 @@
 /*
-Semestre 2021-2
-Práctica : Iluminación
-Cambios en el shader, en lugar de enviar la textura en el shader de fragmentos, enviaremos el finalcolor
+Proyecto Final Computacion Grafica e interaccion Humano Computadora
 */
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
