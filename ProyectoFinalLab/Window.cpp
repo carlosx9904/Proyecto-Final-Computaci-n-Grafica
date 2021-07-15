@@ -13,10 +13,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 {
 	width = windowWidth;
 	height = windowHeight;
-	muevex = 2.0f;
-	muevey = 2.0f;
-	muevekittx = 1.0f;
-	muevekittz = 1.0f;
+
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -107,40 +104,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	//SE MUEVE HEICOPTERO
-	if (key == GLFW_KEY_Y)
-	{
-		theWindow-> muevex -= 1.0;
-	}
-	if (key == GLFW_KEY_U)
-	{
-		theWindow-> muevex += 1.0;
-	}
-	if (key == GLFW_KEY_T)
-	{
-		theWindow->muevey += 1.0;
-	}
-	if (key == GLFW_KEY_G)
-	{
-		theWindow->muevey -= 1.0;
-	}
-	// SE MUEVE AUTO
-	if (key == GLFW_KEY_H)
-	{
-		theWindow->muevekittx -= 1.0;
-	}
-	if (key == GLFW_KEY_J)
-	{
-		theWindow->muevekittx += 1.0;
-	}
-	if (key == GLFW_KEY_I)
-	{
-		theWindow->muevekittz -= 1.0;
-	}
-	if (key == GLFW_KEY_K)
-	{
-		theWindow->muevekittz += 1.0;
-	}
+	
 
 
 	if (key >= 0 && key < 1024)

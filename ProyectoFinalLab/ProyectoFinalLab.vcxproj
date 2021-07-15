@@ -150,7 +150,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Main07_TovarHerrera.cpp" />
+    <ClCompile Include="Main_TovarHerrera.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh_tn.cpp" />
     <ClCompile Include="Model.cpp" />

@@ -16,9 +16,8 @@ Proyecto Final Computacion Grafica e interaccion Humano Computadora
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
-//para probar el importer
-//#include<assimp/Importer.hpp>
 
+//ARCHIVOS DE CABECERA
 #include "Window.h"
 #include "Mesh.h"
 #include "Shader_light.h"
