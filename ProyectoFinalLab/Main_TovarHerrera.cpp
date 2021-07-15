@@ -42,19 +42,21 @@ std::vector<Shader> shaderList;
 
 Camera camera;
 
-Texture brickTexture;
-Texture dirtTexture;
-Texture plainTexture;
-Texture dadoTexture;
 Texture pisoTexture;
-Texture Tagave;
 
 
-Model Kitt_M;
-Model Llanta_M;
-Model Camino_M;
-Model Blackhawk_M;
-Model Dado_M;
+Model Muros;
+
+Model TroncoAvatar;
+Model BDerechoAvatar;
+Model BIzquierdoAvatar;
+Model PIzquierdaAvatar;
+Model PDerechaAvatar;
+
+
+
+
+
 
 Skybox skybox;
 
@@ -204,9 +206,28 @@ int main()
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
 
 
-
-	pisoTexture = Texture("Textures/piso.tga");
+	//CARGAR TEXTURAS
+	pisoTexture = Texture("Textures/piso_pr.tga");
 	pisoTexture.LoadTextureA();
+	//Modelo de plaza
+	Muros = Model();
+	Muros.LoadModel("Models/muros.obj");
+
+	//CARGAR MODELOS
+	TroncoAvatar = Model();
+	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
+
+	BDerechoAvatar = Model();
+	BDerechoAvatar.LoadModel("Models/brazo_derecho_avatar.obj");
+
+	BIzquierdoAvatar = Model();
+	BIzquierdoAvatar.LoadModel("Models/brazo_izquierdo_avatar.obj");
+
+	PIzquierdaAvatar = Model();
+	PIzquierdaAvatar.LoadModel("Models/pierna_izquierda_avatar.obj");
+
+	PDerechaAvatar = Model();
+	PDerechaAvatar.LoadModel("Models/pierna_derecha_avatar.obj");
 
 
 	std::vector<std::string> skyboxFaces;
@@ -222,9 +243,7 @@ int main()
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//posición inicial del helicóptero
-	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
-
+	
 	//luz direccional, sólo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		0.3f, 0.3f,
@@ -309,6 +328,38 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
+		//Modelo Muros Plaza
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(30.0f, -1.5f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Muros.RenderModel();
+
+		//Renderizado AVATAR
+		model = glm::mat4(1.0);
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 10.0f));
+		auxiliar = model;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		TroncoAvatar.RenderModel();
+		//BRAZO DERECHO
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		BDerechoAvatar.RenderModel(); 
+		//BRAZO IZQUIERDO
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		BIzquierdoAvatar.RenderModel();
+		//PIERNA IZQUIERDA
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PIzquierdaAvatar.RenderModel();
+		//PIERNA DERECHA
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PDerechaAvatar.RenderModel();
 
 	
 
