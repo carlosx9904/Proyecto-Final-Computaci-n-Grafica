@@ -46,6 +46,7 @@ Texture pisoTexture;
 
 
 Model Muros;
+Model Carrusel;
 
 Model TroncoAvatar;
 Model BDerechoAvatar;
@@ -212,7 +213,9 @@ int main()
 	//Modelo de plaza
 	Muros = Model();
 	Muros.LoadModel("Models/muros_2.obj");
-
+	//Modelo del carrusel
+	Carrusel = Model();
+	Carrusel.LoadModel("Models/carrusel.obj");
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
 	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
@@ -336,10 +339,20 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
+		//MODELO CARROUSEL
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-120.0f, 0.0f, -50.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Carrusel.RenderModel();
+
+
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 55.0f));
+		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, -10.0f)+ camera.getCameraPosition());
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -360,7 +373,7 @@ int main()
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
-
+		
 	
 
 		glUseProgram(0);
