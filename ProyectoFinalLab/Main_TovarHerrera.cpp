@@ -211,7 +211,7 @@ int main()
 	pisoTexture.LoadTextureA();
 	//Modelo de plaza
 	Muros = Model();
-	Muros.LoadModel("Models/muros.obj");
+	Muros.LoadModel("Models/muros_2.obj");
 
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
@@ -330,17 +330,17 @@ int main()
 		meshList[2]->RenderMesh();
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(30.0f, -1.5f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 10.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		TroncoAvatar.RenderModel();
