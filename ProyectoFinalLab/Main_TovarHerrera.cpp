@@ -321,7 +321,7 @@ int main()
 		glm::mat4 auxiliar(1.0);
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
 		model = glm::scale(model, glm::vec3(40.0f, 1.0f, 40.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
@@ -330,7 +330,7 @@ int main()
 		meshList[2]->RenderMesh();
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
-		//model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -339,7 +339,7 @@ int main()
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 55.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
