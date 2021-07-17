@@ -47,6 +47,12 @@ Texture pisoTexture;
 
 Model Muros;
 Model Carrusel;
+Model Caballo1;
+Model Caballo2;
+Model Caballo3;
+Model Caballo4;
+Model MesaSilla;
+
 
 Model TroncoAvatar;
 Model BDerechoAvatar;
@@ -215,10 +221,23 @@ int main()
 	Muros.LoadModel("Models/muros_2.obj");
 	//Modelo del carrusel
 	Carrusel = Model();
-	Carrusel.LoadModel("Models/carrusel.obj");
+	Carrusel.LoadModel("Models/carrusel_principal.obj");
+
+	Caballo1 = Model();
+	Caballo1.LoadModel("Models/caballo_1.obj");
+	Caballo2 = Model();
+	Caballo2.LoadModel("Models/caballo_2.obj");
+	Caballo3 = Model();
+	Caballo3.LoadModel("Models/caballo_3.obj");
+	Caballo4 = Model();
+	Caballo4.LoadModel("Models/caballo_4.obj");
+
+	MesaSilla = Model();
+	MesaSilla.LoadModel("Models/caballo_4.obj");
+
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
-	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
+	TroncoAvatar.LoadModel("Models/mesa_silla.obj");
 
 	BDerechoAvatar = Model();
 	BDerechoAvatar.LoadModel("Models/brazo_derecho_avatar.obj");
@@ -334,25 +353,52 @@ int main()
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.2f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
+
+		model = glm::mat4(1.0);
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 50.0f));
+		//model = glm::scale(model, glm::vec3(3.0f, 3.2f, 3.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		MesaSilla.RenderModel();
+
 		//MODELO CARROUSEL
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, 0.0f, -50.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		auxiliar = model;
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Carrusel.RenderModel();
+		//1
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo1.RenderModel();
+		//2
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo2.RenderModel();
+		//3
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo3.RenderModel();
+		//4
+		model = auxiliar;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo4.RenderModel();
+
 
 
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, -10.0f)+ camera.getCameraPosition());
+		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, -10.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -375,6 +421,8 @@ int main()
 		PDerechaAvatar.RenderModel();
 		
 	
+	
+
 
 		glUseProgram(0);
 
