@@ -46,6 +46,10 @@ Texture pisoTexture;
 
 
 Model Muros;
+Model PuertaP;
+Model PuertaI;
+Model PuertaD;
+
 Model Carrusel;
 Model Caballo1;
 Model Caballo2;
@@ -219,6 +223,16 @@ int main()
 	//Modelo de plaza
 	Muros = Model();
 	Muros.LoadModel("Models/muros_2.obj");
+
+	PuertaP = Model();
+	PuertaP.LoadModel("Models/marco_puerta.obj");
+
+	PuertaI = Model();
+	PuertaI.LoadModel("Models/puerta_izquierda.obj");
+
+	PuertaD = Model();
+	PuertaD.LoadModel("Models/puerta_derecha.obj");
+
 	//Modelo del carrusel
 	Carrusel = Model();
 	Carrusel.LoadModel("Models/carrusel_principal.obj");
@@ -341,6 +355,7 @@ int main()
 
 		glm::mat4 model(1.0);
 		glm::mat4 auxiliar(1.0);
+		glm::mat4 auxiliar2(1.0);
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
@@ -350,17 +365,87 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
+
+
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.2f, 50.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
-
+		//puerta Principal
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -60.0f));
+		model = glm::translate(model, glm::vec3(-121.0f, 0.0f, 138.0f));
+		model = glm::scale(model, glm::vec3(9.5f, 12.8f, 15.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PuertaP.RenderModel();
+		//PUERTAS LIVERPOOL
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 73.5f));
+		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.5f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PuertaI.RenderModel();
+		
+		//PUERTAS WALMART
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 43.1f));
+		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PuertaI.RenderModel();
+
+		//PUERTAS BAÑO
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-50.0f, -0.5f, -81.0f));
+		model = glm::scale(model, glm::vec3(9.5f, 18.0f, 17.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PuertaI.RenderModel();
+
+		//PUERTAS BAÑO2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-50.0f, -0.5f, -102.0f));
+		model = glm::scale(model, glm::vec3(9.5f, 18.0f, 17.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		PuertaI.RenderModel();
+
+
+
+
+		//MESA Y SILLAS
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-210.0f, 0.0f, -60.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		MesaSilla.RenderModel();
+		//MESA Y SILLAS
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-250.0f, 0.0f, -60.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		MesaSilla.RenderModel();
+		//MESA Y SILLAS
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-230.0f, 0.0f, -80.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		MesaSilla.RenderModel();
+		//MESA Y SILLAS
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-190.0f, 0.0f, -80.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -368,34 +453,35 @@ int main()
 
 		//MODELO CARROUSEL
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-120.0f, 0.0f, -50.0f));
+		model = glm::translate(model, glm::vec3(-110.0f, 0.0f, -65.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		auxiliar = model;
+		auxiliar2 = model;
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Carrusel.RenderModel();
 		//1
 		model = glm::mat4(1.0);
-		model = auxiliar;
+		model = auxiliar2;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		/*model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));*/
 		Caballo1.RenderModel();
 		//2
 		model = glm::mat4(1.0);
-		model = auxiliar;
+		model = auxiliar2;
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo2.RenderModel();
 		
 		//3 rotar 180 en Y, -6.3Z
 		model = glm::mat4(1.0);
-		model = auxiliar;
+		model = auxiliar2;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo3.RenderModel();
 		//4
 		model = glm::mat4(1.0);
-		model = auxiliar;
+		model = auxiliar2;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo4.RenderModel();
 
