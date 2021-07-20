@@ -218,7 +218,7 @@ int main()
 	pisoTexture.LoadTextureA();
 	//Modelo de plaza
 	Muros = Model();
-	Muros.LoadModel("Models/muros_2.obj");
+	Muros.LoadModel("Models/muros_3.obj");
 	//Modelo del carrusel
 	Carrusel = Model();
 	Carrusel.LoadModel("Models/carrusel_principal.obj");
@@ -233,11 +233,11 @@ int main()
 	Caballo4.LoadModel("Models/caballo_4.obj");
 
 	MesaSilla = Model();
-	MesaSilla.LoadModel("Models/caballo_4.obj");
+	MesaSilla.LoadModel("Models/mesa_silla.obj");
 
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
-	TroncoAvatar.LoadModel("Models/mesa_silla.obj");
+	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
 
 	BDerechoAvatar = Model();
 	BDerechoAvatar.LoadModel("Models/brazo_derecho_avatar.obj");
@@ -353,16 +353,15 @@ int main()
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.5f, 50.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 3.2f, 3.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
 
 		model = glm::mat4(1.0);
-		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 50.0f));
-		//model = glm::scale(model, glm::vec3(3.0f, 3.2f, 3.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -60.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		MesaSilla.RenderModel();
@@ -370,25 +369,32 @@ int main()
 		//MODELO CARROUSEL
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, 0.0f, -50.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		auxiliar = model;
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Carrusel.RenderModel();
 		//1
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		Caballo1.RenderModel();
 		//2
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo2.RenderModel();
-		//3
+		
+		//3 rotar 180 en Y, -6.3Z
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo3.RenderModel();
 		//4
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Caballo4.RenderModel();
@@ -398,24 +404,28 @@ int main()
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, -10.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -110.0f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		TroncoAvatar.RenderModel();
 		//BRAZO DERECHO
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		BDerechoAvatar.RenderModel(); 
 		//BRAZO IZQUIERDO
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		BIzquierdoAvatar.RenderModel();
 		//PIERNA IZQUIERDA
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PIzquierdaAvatar.RenderModel();
 		//PIERNA DERECHA
+		model = glm::mat4(1.0);
 		model = auxiliar;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
