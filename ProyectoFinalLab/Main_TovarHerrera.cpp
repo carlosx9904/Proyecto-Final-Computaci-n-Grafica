@@ -218,7 +218,7 @@ int main()
 	pisoTexture.LoadTextureA();
 	//Modelo de plaza
 	Muros = Model();
-	Muros.LoadModel("Models/muros_3.obj");
+	Muros.LoadModel("Models/muros_2.obj");
 	//Modelo del carrusel
 	Carrusel = Model();
 	Carrusel.LoadModel("Models/carrusel_principal.obj");
