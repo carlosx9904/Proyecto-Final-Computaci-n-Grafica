@@ -244,8 +244,8 @@ int main()
 
 
 	std::vector<std::string> skyboxFaces;
-	skyboxFaces.push_back("Textures/Skybox/izquierda_dia.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up2.tga");
+	skyboxFaces.push_back("Textures/Skybox/izquierda_noche.tga");
+	skyboxFaces.push_back("Textures/Skybox/derecha_noche.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
@@ -441,8 +441,6 @@ int main()
 		model = glm::mat4(1.0);
 		model = auxiliar2;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		/*model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));*/
 		Caballo1.RenderModel();
 		//2
 		model = glm::mat4(1.0);
