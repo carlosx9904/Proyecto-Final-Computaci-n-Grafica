@@ -19,6 +19,7 @@ public:
 		GLuint edgeLocation);
 
 	void SetFlash(glm::vec3 pos, glm::vec3 dir);
+	void DisableFlash();
 	void SetPos(glm::vec3 pos);
 	~SpotLight();
 

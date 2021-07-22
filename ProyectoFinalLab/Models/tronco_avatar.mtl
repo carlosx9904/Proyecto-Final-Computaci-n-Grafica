@@ -1,7 +1,7 @@
-# Blender MTL File: 'None'
+# Blender MTL File: 'pierna.blend'
 # Material Count: 13
 
-newmtl material_1
+newmtl material_1.001
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -91,7 +91,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 
-newmtl material_6
+newmtl material_6.001
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
