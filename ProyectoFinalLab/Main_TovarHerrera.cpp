@@ -65,11 +65,8 @@ Model PIzquierdaAvatar;
 Model PDerechaAvatar;
 
 
-
-
-
-
 Skybox skybox;
+Skybox skybox2;
 
 //materiales
 Material Material_brillante;
@@ -80,6 +77,8 @@ DirectionalLight mainLight;
 //para declarar varias luces de tipo pointlight
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
+
+SpotLight show[MAX_SPOT_LIGHTS];
 
 
 //Sphere cabeza = Sphere(0.5, 20, 20);
@@ -243,15 +242,25 @@ int main()
 	PDerechaAvatar.LoadModel("Models/pierna_derecha_avatar.obj");
 
 
+	std::vector<std::string> skyboxFacesN;
+	skyboxFacesN.push_back("Textures/Skybox/izquierda_noche.tga");
+	skyboxFacesN.push_back("Textures/Skybox/derecha_noche.tga");
+	skyboxFacesN.push_back("Textures/Skybox/arriba_noche.tga");
+	skyboxFacesN.push_back("Textures/Skybox/arriba_noche.tga");
+	skyboxFacesN.push_back("Textures/Skybox/atras_noche.tga");
+	skyboxFacesN.push_back("Textures/Skybox/frente_noche.tga");
+
 	std::vector<std::string> skyboxFaces;
-	skyboxFaces.push_back("Textures/Skybox/izquierda_noche.tga");
-	skyboxFaces.push_back("Textures/Skybox/derecha_noche.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
+	skyboxFaces.push_back("Textures/Skybox/izquierda_dia.tga");
+	skyboxFaces.push_back("Textures/Skybox/derecha_dia.tga");
+	skyboxFaces.push_back("Textures/Skybox/arriba_dia.tga");
+	skyboxFaces.push_back("Textures/Skybox/arriba_dia.tga");
+	skyboxFaces.push_back("Textures/Skybox/atras_dia.tga");
+	skyboxFaces.push_back("Textures/Skybox/frente_dia.tga");
+
 
 	skybox = Skybox(skyboxFaces);
+	skybox2 = Skybox(skyboxFacesN);
 
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
@@ -261,29 +270,109 @@ int main()
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		0.3f, 0.3f,
 		0.0f, 0.0f, -1.0f);
-	//contador de luces puntuales
-	//unsigned int pointLightCount = 0;
-	////Declaración de primer luz puntual
-	//pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
-	//	0.0f, 1.0f,
-	//	2.0f, 1.5f, 1.5f,
-	//	0.3f, 0.2f, 0.1f);
-	//pointLightCount++;
 
-	unsigned int spotLightCount = 0;
-	//linterna asociada a la camara
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+	//LUCES PUNTUALES
+	unsigned int pointLightCount = 0;
+	
+	pointLights[0] = PointLight(0.0f, 1.0f, 1.0f,
 		0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f,
+		-250.0f, 2.0f, -100.0f,
+		1.0f, 0.002f, 0.002f);
+	pointLightCount++;
+
+	pointLights[1] = PointLight(0.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		-210.0f, 2.0f, -100.0f,
+		1.0f, 0.002f, 0.002f);
+	pointLightCount++;
+
+	pointLights[2] = PointLight(1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		-138.0f, 2.0f, 147.0f,
+		1.0f, 0.002f, 0.002f);
+	pointLightCount++;
+
+	pointLights[3] = PointLight(1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		-100.0f, 2.0f, 147.0f,
+		1.0f, 0.002f, 0.002f);
+	pointLightCount++;
+
+	pointLights[4] = PointLight(1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 2.0f, 147.0f,
+		1.0f, 0.002f, 0.002f);
+	pointLightCount++;
+
+	//LUCES SPOTLIGHT
+	unsigned int spotLightCount = 0;
+	
+	spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f,
+		-115.0f, 44.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
-		8.0f);
+		40.0f);
 	spotLightCount++;
 
+	spotLights[1] = SpotLight(0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f,
+		-115.0f, 44.0f, 50.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		40.0f);
+	spotLightCount++;
+
+	spotLights[2] = SpotLight(1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f,
+		-115.0f, 30.0f, 100.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		40.0f);
+	spotLightCount++;
+
+	//LUCES SPOTLIGHT para show
+	unsigned int spotLightCount2 = 0;
+	spotLights[3] = SpotLight(0.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		-115.0f, 30.0f, -60.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		20.0f);
+	spotLightCount++;
+
+	spotLights[4] = SpotLight(1.0f, 1.0f, 0.0f,
+		0.0f, 1.0f,
+		-84.0f, 30.0f, -60.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		20.0f);
+	spotLightCount2++;
+
+	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
+		0.0f, 1.0f,
+		-115.0f, 30.0f, -100.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		20.0f);
+	spotLightCount++;
+
+	spotLights[6] = SpotLight(1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f,
+		-84.0f, 30.0f, -100.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		20.0f);
+	spotLightCount++;
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
+
+	float intervaloSkybox = 0.0; //CONTADOR PARA EL SKYBOX
+	int dia = 1; // BANDERA PARA SABER SI ES DIA O NOCHE
+	float showL = 0.0; 
+	int luces = 0;
 
 
 	////Loop mientras no se cierra la ventana
@@ -302,7 +391,27 @@ int main()
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+
+		//CAMBIO DE SKYBOX
+		if (dia == 1) { // Comienza siendo dia
+			if (intervaloSkybox < 300) { //Cuenta hasta llegar a 300
+				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+				intervaloSkybox += 0.4 * deltaTime;
+			}
+			else {
+				dia = 0; //Actualiza bandera y se cambia de noche
+			}
+		}
+		if (dia == 0) { // Cambia a noche
+			if (intervaloSkybox > 0) {
+				skybox2.DrawSkybox(camera.calculateViewMatrix(), projection);
+				intervaloSkybox -= 0.4 * deltaTime;
+			}
+			else {
+				dia = 1; //Actualiza bandera y se cambia a dia
+			}
+		}
+		
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
@@ -317,18 +426,103 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		//luz ligada a la cámara de tipo flash 
-		/*glm::vec3 lowerLight = camera.getCameraPosition();
-		lowerLight.y -= 0.3f;
-		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());*/
-		
-
 
 		//información al shader de fuentes de iluminación
 		shaderList[0].SetDirectionalLight(&mainLight);
-		//shaderList[0].SetPointLights(pointLights, pointLightCount);
-		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
+		
+		//Luces que encienden de manera automatica cuando es de noche
+		if (dia == 0) {
+			shaderList[0].SetPointLights(pointLights, pointLightCount);//activa luz puntual
+		}
+		else {
+			shaderList[0].SetPointLights(pointLights, 0);//desactiva luz puntual
+		}
+
+		//Luz por teclado
+		if (mainWindow.luces() == true) {
+			shaderList[0].SetSpotLights(spotLights, 1);//activa spotlight
+			shaderList[0].SetSpotLights(spotLights, 2);//activa spotlight
+			shaderList[0].SetSpotLights(spotLights, 3);//activa spotlight
+
+		}
+		else {
+			shaderList[0].SetSpotLights(spotLights, 0);//desactiva luz puntual
+		}
+
+		//show de luces
+		if (mainWindow.showLuces() == true && mainWindow.luces() == true) {
+			if (luces == 0) {
+				if (showL < 200) {
+					showL += 0.5 * deltaTime;
+					if (showL > 0) {
+						shaderList[0].SetSpotLights(spotLights, 4);
+					}
+					if (showL > 50) {
+						shaderList[0].SetSpotLights(spotLights, 5);
+					}
+					if (showL > 100) {
+						shaderList[0].SetSpotLights(spotLights, 6);
+					}
+					if (showL > 150) {
+						shaderList[0].SetSpotLights(spotLights, 7);
+					}
+				}
+				else {
+					luces = 1;
+				}
+			}
+			if (luces == 1) {
+				if (showL > 100) {
+					showL -= 0.5 * deltaTime;
+					/*if (showL > 199) {
+						shaderList[0].SetSpotLights(spotLights, 7);
+					}
+					if (showL > 150) {
+						shaderList[0].SetSpotLights(spotLights, 6);
+					}
+					if (showL > 100) {
+						shaderList[0].SetSpotLights(spotLights, 5);
+					}
+					if (showL > 50) {
+						shaderList[0].SetSpotLights(spotLights, 4);
+					}*/
+					
+				}
+				else {
+					luces = 2;
+				}
+			}
+			if (luces == 2) {
+				if (showL < 200) {
+					showL += 0.5 * deltaTime;
+					if (showL > 100) {
+						shaderList[0].SetSpotLights(spotLights, 4);
+					}
+					if (showL > 120) {
+						shaderList[0].SetSpotLights(spotLights, 5);
+					}
+					if (showL > 140) {
+						shaderList[0].SetSpotLights(spotLights, 6);
+					}
+					if (showL > 150) {
+						shaderList[0].SetSpotLights(spotLights, 7);
+					}
+
+				}
+				else {
+					luces = 3;
+				}
+			}
+			if (luces == 3) {
+				if (showL > 0) {
+					showL -= 0.8 * deltaTime;
+				}
+				else {
+					luces = 0;
+				}
+			}
+		}
 
 		glm::mat4 model(1.0);
 		glm::mat4 auxiliar(1.0);
@@ -430,7 +624,7 @@ int main()
 
 		//MODELO CARROUSEL
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-110.0f, 0.0f, -65.0f));
+		model = glm::translate(model, glm::vec3(-100.0f, 0.0f, -80.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		auxiliar2 = model;

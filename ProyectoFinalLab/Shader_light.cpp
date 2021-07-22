@@ -231,6 +231,21 @@ void Shader::SetSpotLights(SpotLight * sLight, unsigned int lightCount)
 	}
 }
 
+void Shader::SetSpotLights2(SpotLight * sLight, unsigned int lightCount)
+{
+	if (lightCount > MAX_SPOT_LIGHTS) lightCount = MAX_SPOT_LIGHTS;
+
+	glUniform1i(uniformSpotLightCount, lightCount);
+
+	for (size_t i = 0; i < lightCount; i++)
+	{
+		sLight[i].UseLight(uniformSpotLight[i].uniformAmbientIntensity, uniformSpotLight[i].uniformColour,
+			uniformSpotLight[i].uniformDiffuseIntensity, uniformSpotLight[i].uniformPosition, uniformSpotLight[i].uniformDirection,
+			uniformSpotLight[i].uniformConstant, uniformSpotLight[i].uniformLinear, uniformSpotLight[i].uniformExponent,
+			uniformSpotLight[i].uniformEdge);
+	}
+}
+
 
 void Shader::UseShader()
 {

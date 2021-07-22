@@ -104,7 +104,24 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	
+	//ENCIENDE LUCES
+	if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+	{
+		theWindow->prendeLuz = true;
+	}
+	if (key == GLFW_KEY_N)
+	{
+		theWindow->prendeLuz = false;
+	}
+	//INICIA SHOW
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		theWindow->iniciaShow = true;
+	}
+	if (key == GLFW_KEY_O)
+	{
+		theWindow->iniciaShow = false;
+	}
 
 
 	if (key >= 0 && key < 1024)
