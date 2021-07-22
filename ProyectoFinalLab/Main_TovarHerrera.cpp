@@ -41,6 +41,7 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 
 Camera camera;
+Camera cameraComida;
 
 Texture pisoTexture;
 
@@ -191,6 +192,7 @@ int main()
 	CreateShaders();
 
 	camera = Camera(glm::vec3(-50.0f, 0.0f, 180.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+	cameraComida = Camera(glm::vec3(-260.0f, 20.0f, -65.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
 
 
 	//CARGAR TEXTURAS
@@ -351,7 +353,7 @@ int main()
 
 	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
 		0.0f, 1.0f,
-		-115.0f, 30.0f, -100.0f,
+		-84.0f, 30.0f, -100.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		20.0f);
@@ -359,7 +361,7 @@ int main()
 
 	spotLights[6] = SpotLight(1.0f, 1.0f, 1.0f,
 		0.0f, 1.0f,
-		-84.0f, 30.0f, -100.0f,
+		-115.0f, 30.0f, -100.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		20.0f);
@@ -411,7 +413,6 @@ int main()
 				dia = 1; //Actualiza bandera y se cambia a dia
 			}
 		}
-		
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
@@ -423,9 +424,14 @@ int main()
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-
+		if (mainWindow.camaraCom() == true) {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraComida.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, cameraComida.getCameraPosition().x, cameraComida.getCameraPosition().y, cameraComida.getCameraPosition().z);
+		}
+		else {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		}
 
 		//información al shader de fuentes de iluminación
 		shaderList[0].SetDirectionalLight(&mainLight);
@@ -474,20 +480,7 @@ int main()
 			}
 			if (luces == 1) {
 				if (showL > 100) {
-					showL -= 0.5 * deltaTime;
-					/*if (showL > 199) {
-						shaderList[0].SetSpotLights(spotLights, 7);
-					}
-					if (showL > 150) {
-						shaderList[0].SetSpotLights(spotLights, 6);
-					}
-					if (showL > 100) {
-						shaderList[0].SetSpotLights(spotLights, 5);
-					}
-					if (showL > 50) {
-						shaderList[0].SetSpotLights(spotLights, 4);
-					}*/
-					
+					showL -= 0.8 * deltaTime;
 				}
 				else {
 					luces = 2;
@@ -517,6 +510,16 @@ int main()
 			if (luces == 3) {
 				if (showL > 0) {
 					showL -= 0.8 * deltaTime;
+					if (showL < 150 && showL > 100) {
+						showL += 0.5 * deltaTime;
+						shaderList[0].SetSpotLights(spotLights, 5);
+					}
+					if (showL < 100 && showL > 50) {
+						showL += 0.5 * deltaTime;
+						shaderList[0].SetSpotLights(spotLights, 6);
+						shaderList[0].SetSpotLights(spotLights, 7);
+					}
+					
 				}
 				else {
 					luces = 0;

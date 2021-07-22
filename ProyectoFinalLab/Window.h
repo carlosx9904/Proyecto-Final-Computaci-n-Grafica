@@ -15,6 +15,7 @@ public:
 	GLfloat getYChange();
 	GLint luces() { return prendeLuz; }
 	GLint showLuces() { return iniciaShow; }
+	GLint camaraCom() { return camara2; }
 
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
@@ -34,6 +35,7 @@ private:
 	GLfloat yChange;
 	GLint prendeLuz;
 	GLint iniciaShow;
+	GLint camara2;
 
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

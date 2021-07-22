@@ -122,6 +122,15 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		theWindow->iniciaShow = false;
 	}
+	//CAMBIA CAMARA
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+		theWindow->camara2 = true;
+	}
+	if (key == GLFW_KEY_2)
+	{
+		theWindow->camara2 = false;
+	}
 
 
 	if (key >= 0 && key < 1024)
