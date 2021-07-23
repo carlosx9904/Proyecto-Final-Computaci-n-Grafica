@@ -1,7 +1,7 @@
-# Blender MTL File: 'pierna.blend'
-# Material Count: 13
+# Blender MTL File: 'prueba.blend'
+# Material Count: 8
 
-newmtl material_1.001
+newmtl material_1.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -10,8 +10,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_10
+newmtl material_16.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -20,8 +21,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_13
+newmtl material_2.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -30,8 +32,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_15
+newmtl material_20.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -40,8 +43,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_16
+newmtl material_3.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -50,8 +54,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_17
+newmtl material_7.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -60,8 +65,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_2
+newmtl material_8.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -70,8 +76,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_20
+newmtl material_9.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -80,53 +87,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-
-newmtl material_3
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl material_6.001
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl material_7
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl material_8
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl material_9
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga

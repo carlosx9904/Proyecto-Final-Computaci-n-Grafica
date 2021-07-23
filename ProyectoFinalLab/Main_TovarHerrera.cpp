@@ -61,6 +61,7 @@ Model Caballo4;
 Model MesaSilla;
 
 
+
 Model TroncoAvatar;
 Model BDerechoAvatar;
 Model BIzquierdoAvatar;
@@ -248,6 +249,7 @@ int main()
 	PDerechaAvatar.LoadModel("Models/pierna_derecha_avatar.obj");
 
 
+
 	std::vector<std::string> skyboxFacesN;
 	skyboxFacesN.push_back("Textures/Skybox/izquierda_noche.tga");
 	skyboxFacesN.push_back("Textures/Skybox/derecha_noche.tga");
@@ -380,6 +382,15 @@ int main()
 	float showL = 0.0; 
 	int luces = 0;
 	int camara = 0;
+
+	
+	float posXavatar = 0.0f;
+	float posZavatar = 0.0f;
+	float offset = 0.0f;
+	float offsetXavatar = 0.0f;
+	float offsetZavatar = 0.0f;
+	float rotaAvatar = 0.0f;
+	int direccionAvatar = 0;
 
 
 	////Loop mientras no se cierra la ventana
@@ -571,6 +582,7 @@ int main()
 		glm::mat4 model(1.0);
 		glm::mat4 auxiliar(1.0);
 		glm::mat4 auxiliar2(1.0);
+		glm::vec3 animacionAvatar(1.0);
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
@@ -646,7 +658,7 @@ int main()
 		MesaSilla.RenderModel();
 		//MESA Y SILLAS
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-250.0f, 0.0f, -60.0f));
+		model = glm::translate(model, glm::vec3(-245.0f, 0.0f, -60.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -699,13 +711,70 @@ int main()
 		Caballo4.RenderModel();
 
 
-
+		//ANIMACION AVATAR
+		if (direccionAvatar == 0)
+		{
+			if (posZavatar < 53.0)
+			{
+				posZavatar += 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -90);
+				direccionAvatar = 1;
+			}
+		}
+		if (direccionAvatar == 1)
+		{
+			if (posXavatar > -83.0)
+			{
+				posXavatar -= 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -180);
+				direccionAvatar = 2;
+			}
+		}
+		if (direccionAvatar == 2)
+		{
+			if (posZavatar > 0.0)
+			{
+				posZavatar -= 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -270);
+				direccionAvatar = 3;
+			}
+		}
+		if (direccionAvatar == 3)
+		{
+			if (posXavatar < 0.0)
+			{
+				posXavatar += 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar += 0.1;
+				} while (rotaAvatar <= 0);
+				direccionAvatar = 0;
+			}
+		}
+		animacionAvatar = glm::vec3(posXavatar, 0, posZavatar);
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -110.0f));
+		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -100.0f) + animacionAvatar);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
-		//model = glm::rotate(model, 40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 0 + rotaAvatar * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		TroncoAvatar.RenderModel();
@@ -731,6 +800,8 @@ int main()
 		//model = glm::rotate(model, 40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
+
+		
 		
 	
 	

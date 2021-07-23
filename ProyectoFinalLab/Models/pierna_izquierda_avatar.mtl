@@ -1,7 +1,7 @@
-# Blender MTL File: 'pierna.blend'
-# Material Count: 4
+# Blender MTL File: 'None'
+# Material Count: 3
 
-newmtl material_1
+newmtl material_4.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -10,8 +10,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_4
+newmtl material_5.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -20,8 +21,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_5
+newmtl material_6.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -30,13 +32,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-
-newmtl material_6
-Ns 11.704796
-Ka 1.000000 1.000000 1.000000
-Kd 0.600000 0.600000 0.600000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga

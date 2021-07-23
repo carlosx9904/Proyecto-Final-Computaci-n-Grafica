@@ -1,7 +1,7 @@
-# Blender MTL File: 'None'
+# Blender MTL File: 'prueba.blend'
 # Material Count: 3
 
-newmtl material_10
+newmtl material_10.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -10,8 +10,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_11
+newmtl material_11.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -20,8 +21,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_12
+newmtl material_12.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -30,3 +32,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
