@@ -68,6 +68,8 @@ Model BIzquierdoAvatar;
 Model PIzquierdaAvatar;
 Model PDerechaAvatar;
 
+Model mostrador1;
+Model mostrador2;
 
 Skybox skybox;
 Skybox skybox2;
@@ -232,6 +234,11 @@ int main()
 	MesaSilla = Model();
 	MesaSilla.LoadModel("Models/mesa_silla.obj");
 
+	mostrador1 = Model();
+	mostrador1.LoadModel("Models/mostradorWal.obj");
+	mostrador2 = Model();
+	mostrador2.LoadModel("Models/mostradorLiv.obj");
+
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
 	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
@@ -393,6 +400,17 @@ int main()
 
 	float muevePuertaP = 0.0f;
 	float escalaXP = 0.0f;
+
+	float rotaCarrusel = 0.0f;
+	int giroCarrusel = 0;
+	int direccionCarrusel = 0;
+	float posXcarrusel = 0.0f;
+	float posZcarrusel = 0.0f;
+
+	float desplYcarrusel = 0.0f;
+	float offset = 0.0f;
+	float desplYcarrusel2 = 0.0f;
+	float offset2 = 0.0f;
 
 
 	////Loop mientras no se cierra la ventana
@@ -585,6 +603,7 @@ int main()
 		glm::mat4 auxiliar(1.0);
 		glm::mat4 auxiliar2(1.0);
 		glm::vec3 animacionAvatar(1.0);
+		glm::vec3 animacionCarrusel(1.0);
 		glm::vec3 escalarP1(1.0);
 
 		model = glm::mat4(1.0);
@@ -605,7 +624,7 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
-
+		//Animacion sencilla Puerta principal
 		if (mainWindow.puertaPrin() == true) {
 			if (muevePuertaP < 30 ) {
 				muevePuertaP += 0.5 * deltaTime;
@@ -660,7 +679,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 44.0f));
 		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
@@ -683,8 +702,115 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
 
+		if (giroCarrusel == 0) {
+			if (rotaCarrusel < 1000) {
+				rotaCarrusel += 0.5 * deltaTime;
+			}
+			else {
+				giroCarrusel = 1;
+			}
 
+		}
+		if (giroCarrusel == 1) {
+			if (rotaCarrusel > 0) {
+				rotaCarrusel -= 0.5 * deltaTime;
+			}
+			else {
+				giroCarrusel = 0;
+			}
+		}
 
+		if (direccionCarrusel == 0)
+		{
+			if (posXcarrusel < 20.0)
+			{
+				posXcarrusel += 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 1;
+			}
+		}
+		if (direccionCarrusel == 1)
+		{
+			if (posZcarrusel < 20.0)
+			{
+				posZcarrusel += 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 2;
+			}
+		}
+		if (direccionCarrusel == 2)
+		{
+			if (posXcarrusel > 0.0)
+			{
+				posXcarrusel -= 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 3;
+			}
+		}
+		if (direccionCarrusel == 3)
+		{
+			if (posZcarrusel > 0.0)
+			{
+				posZcarrusel -= 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 0;
+			}
+		}
+	
+		offset += 2.0 * deltaTime;
+		desplYcarrusel = 0.3 * sin(offset * toRadians);
+
+		offset2 += 2.0 * deltaTime;
+		desplYcarrusel2 = 0.3 * cos(offset2 * toRadians);
+
+		printf("%f ++\n ", desplYcarrusel);
+		animacionCarrusel = glm::vec3(posXcarrusel, 0, posZcarrusel);
+		
+		//MODELO CARROUSEL
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-110.0f, 0.0f, -90.0f) + animacionCarrusel);
+		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		auxiliar2 = model;
+		model = glm::rotate(model, 0 - rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Carrusel.RenderModel();
+		//1
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f , 0.0f + desplYcarrusel));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo1.RenderModel();
+
+		//2
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel2));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo2.RenderModel();
+
+		////3 rotar
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo3.RenderModel();
+
+		////4
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel2));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo4.RenderModel();
 
 		//MESA Y SILLAS
 		model = glm::mat4(1.0);
@@ -714,38 +840,6 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		MesaSilla.RenderModel();
-
-		//MODELO CARROUSEL
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.0f, 0.0f, -80.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		auxiliar2 = model;
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Carrusel.RenderModel();
-		//1
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo1.RenderModel();
-		//2
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo2.RenderModel();
-		
-		//3 rotar 180 en Y, -6.3Z
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo3.RenderModel();
-		//4
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo4.RenderModel();
 
 
 		//ANIMACION AVATAR
@@ -838,11 +932,22 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
 
-		
-		
-	
-	
 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 32.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador1.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 120.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador2.RenderModel();
 
 		glUseProgram(0);
 
