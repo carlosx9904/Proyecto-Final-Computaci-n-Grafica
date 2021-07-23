@@ -35,7 +35,7 @@ private:
 	GLfloat yChange;
 	GLint prendeLuz;
 	GLint iniciaShow;
-	GLint camara2;
+	GLint camara2 = 2;
 
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

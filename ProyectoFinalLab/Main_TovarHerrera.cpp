@@ -42,6 +42,8 @@ std::vector<Shader> shaderList;
 
 Camera camera;
 Camera cameraComida;
+Camera cameraCarrusel;
+
 
 Texture pisoTexture;
 
@@ -193,6 +195,8 @@ int main()
 
 	camera = Camera(glm::vec3(-50.0f, 0.0f, 180.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
 	cameraComida = Camera(glm::vec3(-260.0f, 20.0f, -65.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+	cameraCarrusel = Camera(glm::vec3(-115.0f, 20.0f, 90.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+
 
 
 	//CARGAR TEXTURAS
@@ -375,6 +379,7 @@ int main()
 	int dia = 1; // BANDERA PARA SABER SI ES DIA O NOCHE
 	float showL = 0.0; 
 	int luces = 0;
+	int camara = 0;
 
 
 	////Loop mientras no se cierra la ventana
@@ -387,9 +392,20 @@ int main()
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
-
+		if (mainWindow.camaraCom() == 0) {
+			cameraComida.keyControl(mainWindow.getsKeys(), deltaTime);
+			cameraComida.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else if (mainWindow.camaraCom() == 1) {
+			cameraCarrusel.keyControl(mainWindow.getsKeys(), deltaTime);
+			cameraCarrusel.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else {
+			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		
+		
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -397,7 +413,15 @@ int main()
 		//CAMBIO DE SKYBOX
 		if (dia == 1) { // Comienza siendo dia
 			if (intervaloSkybox < 300) { //Cuenta hasta llegar a 300
-				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+				if (mainWindow.camaraCom() == 0) {
+					skybox.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
+				}
+				else if (mainWindow.camaraCom() == 1) {
+					skybox.DrawSkybox(cameraCarrusel.calculateViewMatrix(), projection);
+				}
+				else {
+					skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+				}
 				intervaloSkybox += 0.4 * deltaTime;
 			}
 			else {
@@ -406,7 +430,15 @@ int main()
 		}
 		if (dia == 0) { // Cambia a noche
 			if (intervaloSkybox > 0) {
-				skybox2.DrawSkybox(camera.calculateViewMatrix(), projection);
+				if (mainWindow.camaraCom() == 0) {
+					skybox2.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
+				}
+				else if (mainWindow.camaraCom() == 1) {
+					skybox2.DrawSkybox(cameraCarrusel.calculateViewMatrix(), projection);
+				}
+				else {
+					skybox2.DrawSkybox(camera.calculateViewMatrix(), projection);
+				}
 				intervaloSkybox -= 0.4 * deltaTime;
 			}
 			else {
@@ -424,14 +456,23 @@ int main()
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		if (mainWindow.camaraCom() == true) {
+		
+		if (mainWindow.camaraCom() == 0) {
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraComida.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, cameraComida.getCameraPosition().x, cameraComida.getCameraPosition().y, cameraComida.getCameraPosition().z);
+		}
+		else if (mainWindow.camaraCom() == 1) {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraCarrusel.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, cameraCarrusel.getCameraPosition().x, cameraCarrusel.getCameraPosition().y, cameraCarrusel.getCameraPosition().z);
 		}
 		else {
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 		}
+		
+		
+		
+		
 
 		//información al shader de fuentes de iluminación
 		shaderList[0].SetDirectionalLight(&mainLight);
