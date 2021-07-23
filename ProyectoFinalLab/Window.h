@@ -16,6 +16,8 @@ public:
 	GLint luces() { return prendeLuz; }
 	GLint showLuces() { return iniciaShow; }
 	GLint camaraCom() { return camara2; }
+	GLint puertaLiv() { return puerta1; }
+	GLint puertaPrin() { return puerta2; }
 
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
@@ -36,6 +38,8 @@ private:
 	GLint prendeLuz;
 	GLint iniciaShow;
 	GLint camara2 = 2;
+	GLint puerta1;
+	GLint puerta2;
 
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

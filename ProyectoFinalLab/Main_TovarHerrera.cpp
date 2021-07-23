@@ -43,7 +43,7 @@ std::vector<Shader> shaderList;
 Camera camera;
 Camera cameraComida;
 Camera cameraCarrusel;
-
+Camera cameraAux;
 
 Texture pisoTexture;
 
@@ -386,11 +386,13 @@ int main()
 	
 	float posXavatar = 0.0f;
 	float posZavatar = 0.0f;
-	float offset = 0.0f;
-	float offsetXavatar = 0.0f;
-	float offsetZavatar = 0.0f;
 	float rotaAvatar = 0.0f;
 	int direccionAvatar = 0;
+
+	float giroPuerta1 = 0.0f;
+
+	float muevePuertaP = 0.0f;
+	float escalaXP = 0.0f;
 
 
 	////Loop mientras no se cierra la ventana
@@ -583,6 +585,7 @@ int main()
 		glm::mat4 auxiliar(1.0);
 		glm::mat4 auxiliar2(1.0);
 		glm::vec3 animacionAvatar(1.0);
+		glm::vec3 escalarP1(1.0);
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
@@ -596,32 +599,66 @@ int main()
 
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.2f, 50.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.2f, 50.5f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
+
+		if (mainWindow.puertaPrin() == true) {
+			if (muevePuertaP < 30 ) {
+				muevePuertaP += 0.5 * deltaTime;
+				if (escalaXP < 4) {
+					escalaXP += 0.4 * deltaTime;
+				}
+			}
+		}
+		if (mainWindow.puertaPrin() == false) {
+			if (muevePuertaP > 0 ) {
+				muevePuertaP -= 0.5 * deltaTime;
+				if (escalaXP > 0) {
+					escalaXP -= 0.4 * deltaTime;
+				}
+			}
+		}
+
 		//puerta Principal
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-121.0f, 0.0f, 138.0f));
-		model = glm::scale(model, glm::vec3(9.5f, 12.8f, 15.0f));
+		model = glm::translate(model, glm::vec3(-121.0f + muevePuertaP, -1.15f, 140.5f));
+		model = glm::scale(model, glm::vec3(9.5f - escalaXP, 14.0f, 15.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaP.RenderModel();
+
+		//Animacion sencilla puerta 1 
+		if (mainWindow.puertaLiv() == true) {
+			if (giroPuerta1 < 90) {
+				giroPuerta1 += 0.5 * deltaTime;
+			}
+			else {
+				escalarP1 = glm::vec3(9.5f, 0.0f, 25.5f);
+			}
+		}
+		if (mainWindow.puertaLiv() == false) {
+			if (giroPuerta1 > 0) {
+				giroPuerta1 -= 0.5 * deltaTime;
+			}
+		}
 		//PUERTAS LIVERPOOL
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 73.5f));
-		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.5f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 56.3f) );
+		model = glm::scale(model, glm::vec3(9.5f, 18.0f, 24.8f) + escalarP1);
+		model = glm::rotate(model, 0 + giroPuerta1 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
 		
 		//PUERTAS WALMART
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 43.1f));
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 44.0f));
 		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
