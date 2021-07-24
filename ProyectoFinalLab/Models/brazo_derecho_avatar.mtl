@@ -1,7 +1,18 @@
-# Blender MTL File: 'None'
-# Material Count: 3
+# Blender MTL File: 'prueba.blend'
+# Material Count: 4
 
-newmtl material_17
+newmtl Material
+Ns 323.999994
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
+
+newmtl material_17.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -10,8 +21,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_18
+newmtl material_18.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -20,8 +32,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga
 
-newmtl material_19
+newmtl material_19.002
 Ns 11.704796
 Ka 1.000000 1.000000 1.000000
 Kd 0.600000 0.600000 0.600000
@@ -30,3 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:\\Users\\carlo\\OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO\\LabComputacionGrafica\\PROYECTO\\ProyectoFinalLab\\ProyectoFinalLab\\Textures\\avatar_text.tga

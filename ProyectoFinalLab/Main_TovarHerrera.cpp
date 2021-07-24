@@ -41,6 +41,9 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 
 Camera camera;
+Camera cameraComida;
+Camera cameraCarrusel;
+Camera cameraAux;
 
 Texture pisoTexture;
 
@@ -58,12 +61,16 @@ Model Caballo4;
 Model MesaSilla;
 
 
+
 Model TroncoAvatar;
 Model BDerechoAvatar;
 Model BIzquierdoAvatar;
 Model PIzquierdaAvatar;
 Model PDerechaAvatar;
 
+Model mostrador1;
+Model mostrador2;
+Model puesto;
 
 Skybox skybox;
 Skybox skybox2;
@@ -191,6 +198,9 @@ int main()
 	CreateShaders();
 
 	camera = Camera(glm::vec3(-50.0f, 0.0f, 180.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+	cameraComida = Camera(glm::vec3(-260.0f, 20.0f, -65.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+	cameraCarrusel = Camera(glm::vec3(-115.0f, 20.0f, 90.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
+
 
 
 	//CARGAR TEXTURAS
@@ -225,6 +235,14 @@ int main()
 	MesaSilla = Model();
 	MesaSilla.LoadModel("Models/mesa_silla.obj");
 
+	mostrador1 = Model();
+	mostrador1.LoadModel("Models/mostradorWal.obj");
+	mostrador2 = Model();
+	mostrador2.LoadModel("Models/mostradorLiv.obj");
+
+	puesto = Model();
+	puesto.LoadModel("Models/puesto.obj");
+
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
 	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
@@ -240,6 +258,7 @@ int main()
 
 	PDerechaAvatar = Model();
 	PDerechaAvatar.LoadModel("Models/pierna_derecha_avatar.obj");
+
 
 
 	std::vector<std::string> skyboxFacesN;
@@ -351,7 +370,7 @@ int main()
 
 	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
 		0.0f, 1.0f,
-		-115.0f, 30.0f, -100.0f,
+		-84.0f, 30.0f, -100.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		20.0f);
@@ -359,7 +378,7 @@ int main()
 
 	spotLights[6] = SpotLight(1.0f, 1.0f, 1.0f,
 		0.0f, 1.0f,
-		-84.0f, 30.0f, -100.0f,
+		-115.0f, 30.0f, -100.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
 		20.0f);
@@ -373,6 +392,29 @@ int main()
 	int dia = 1; // BANDERA PARA SABER SI ES DIA O NOCHE
 	float showL = 0.0; 
 	int luces = 0;
+	int camara = 0;
+
+	
+	float posXavatar = 0.0f;
+	float posZavatar = 0.0f;
+	float rotaAvatar = 0.0f;
+	int direccionAvatar = 0;
+
+	float giroPuerta1 = 0.0f;
+
+	float muevePuertaP = 0.0f;
+	float escalaXP = 0.0f;
+
+	float rotaCarrusel = 0.0f;
+	int giroCarrusel = 0;
+	int direccionCarrusel = 0;
+	float posXcarrusel = 0.0f;
+	float posZcarrusel = 0.0f;
+
+	float desplYcarrusel = 0.0f;
+	float offset = 0.0f;
+	float desplYcarrusel2 = 0.0f;
+	float offset2 = 0.0f;
 
 
 	////Loop mientras no se cierra la ventana
@@ -385,9 +427,20 @@ int main()
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
-
+		if (mainWindow.camaraCom() == 0) {
+			cameraComida.keyControl(mainWindow.getsKeys(), deltaTime);
+			cameraComida.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else if (mainWindow.camaraCom() == 1) {
+			cameraCarrusel.keyControl(mainWindow.getsKeys(), deltaTime);
+			cameraCarrusel.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		else {
+			camera.keyControl(mainWindow.getsKeys(), deltaTime);
+			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		}
+		
+		
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -395,7 +448,15 @@ int main()
 		//CAMBIO DE SKYBOX
 		if (dia == 1) { // Comienza siendo dia
 			if (intervaloSkybox < 300) { //Cuenta hasta llegar a 300
-				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+				if (mainWindow.camaraCom() == 0) {
+					skybox.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
+				}
+				else if (mainWindow.camaraCom() == 1) {
+					skybox.DrawSkybox(cameraCarrusel.calculateViewMatrix(), projection);
+				}
+				else {
+					skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+				}
 				intervaloSkybox += 0.4 * deltaTime;
 			}
 			else {
@@ -404,14 +465,21 @@ int main()
 		}
 		if (dia == 0) { // Cambia a noche
 			if (intervaloSkybox > 0) {
-				skybox2.DrawSkybox(camera.calculateViewMatrix(), projection);
+				if (mainWindow.camaraCom() == 0) {
+					skybox2.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
+				}
+				else if (mainWindow.camaraCom() == 1) {
+					skybox2.DrawSkybox(cameraCarrusel.calculateViewMatrix(), projection);
+				}
+				else {
+					skybox2.DrawSkybox(camera.calculateViewMatrix(), projection);
+				}
 				intervaloSkybox -= 0.4 * deltaTime;
 			}
 			else {
 				dia = 1; //Actualiza bandera y se cambia a dia
 			}
 		}
-		
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
@@ -423,9 +491,23 @@ int main()
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-
+		
+		if (mainWindow.camaraCom() == 0) {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraComida.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, cameraComida.getCameraPosition().x, cameraComida.getCameraPosition().y, cameraComida.getCameraPosition().z);
+		}
+		else if (mainWindow.camaraCom() == 1) {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraCarrusel.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, cameraCarrusel.getCameraPosition().x, cameraCarrusel.getCameraPosition().y, cameraCarrusel.getCameraPosition().z);
+		}
+		else {
+			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+			glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		}
+		
+		
+		
+		
 
 		//información al shader de fuentes de iluminación
 		shaderList[0].SetDirectionalLight(&mainLight);
@@ -474,20 +556,7 @@ int main()
 			}
 			if (luces == 1) {
 				if (showL > 100) {
-					showL -= 0.5 * deltaTime;
-					/*if (showL > 199) {
-						shaderList[0].SetSpotLights(spotLights, 7);
-					}
-					if (showL > 150) {
-						shaderList[0].SetSpotLights(spotLights, 6);
-					}
-					if (showL > 100) {
-						shaderList[0].SetSpotLights(spotLights, 5);
-					}
-					if (showL > 50) {
-						shaderList[0].SetSpotLights(spotLights, 4);
-					}*/
-					
+					showL -= 0.8 * deltaTime;
 				}
 				else {
 					luces = 2;
@@ -517,6 +586,16 @@ int main()
 			if (luces == 3) {
 				if (showL > 0) {
 					showL -= 0.8 * deltaTime;
+					if (showL < 150 && showL > 100) {
+						showL += 0.5 * deltaTime;
+						shaderList[0].SetSpotLights(spotLights, 5);
+					}
+					if (showL < 100 && showL > 50) {
+						showL += 0.5 * deltaTime;
+						shaderList[0].SetSpotLights(spotLights, 6);
+						shaderList[0].SetSpotLights(spotLights, 7);
+					}
+					
 				}
 				else {
 					luces = 0;
@@ -527,6 +606,9 @@ int main()
 		glm::mat4 model(1.0);
 		glm::mat4 auxiliar(1.0);
 		glm::mat4 auxiliar2(1.0);
+		glm::vec3 animacionAvatar(1.0);
+		glm::vec3 animacionCarrusel(1.0);
+		glm::vec3 escalarP1(1.0);
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -0.2f, 0.0f));
@@ -540,34 +622,68 @@ int main()
 
 		//Modelo Muros Plaza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.2f, 50.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.2f, 50.5f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Muros.RenderModel();
+		//Animacion sencilla Puerta principal
+		if (mainWindow.puertaPrin() == true) {
+			if (muevePuertaP < 30 ) {
+				muevePuertaP += 0.5 * deltaTime;
+				if (escalaXP < 4) {
+					escalaXP += 0.4 * deltaTime;
+				}
+			}
+		}
+		if (mainWindow.puertaPrin() == false) {
+			if (muevePuertaP > 0 ) {
+				muevePuertaP -= 0.5 * deltaTime;
+				if (escalaXP > 0) {
+					escalaXP -= 0.4 * deltaTime;
+				}
+			}
+		}
+
 		//puerta Principal
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-121.0f, 0.0f, 138.0f));
-		model = glm::scale(model, glm::vec3(9.5f, 12.8f, 15.0f));
+		model = glm::translate(model, glm::vec3(-121.0f + muevePuertaP, -1.15f, 140.5f));
+		model = glm::scale(model, glm::vec3(9.5f - escalaXP, 14.0f, 15.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaP.RenderModel();
+
+		//Animacion sencilla puerta 1 
+		if (mainWindow.puertaLiv() == true) {
+			if (giroPuerta1 < 90) {
+				giroPuerta1 += 0.5 * deltaTime;
+			}
+			else {
+				escalarP1 = glm::vec3(9.5f, 0.0f, 25.5f);
+			}
+		}
+		if (mainWindow.puertaLiv() == false) {
+			if (giroPuerta1 > 0) {
+				giroPuerta1 -= 0.5 * deltaTime;
+			}
+		}
 		//PUERTAS LIVERPOOL
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 73.5f));
-		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.5f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 56.3f) );
+		model = glm::scale(model, glm::vec3(9.5f, 18.0f, 24.8f) + escalarP1);
+		model = glm::rotate(model, 0 + giroPuerta1 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
 		
 		//PUERTAS WALMART
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 43.1f));
+		model = glm::translate(model, glm::vec3(-79.0f, -0.5f, 44.0f));
 		model = glm::scale(model, glm::vec3(9.5f, 18.5f, 25.0f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
@@ -590,8 +706,114 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaI.RenderModel();
 
+		if (giroCarrusel == 0) {
+			if (rotaCarrusel < 1000) {
+				rotaCarrusel += 0.5 * deltaTime;
+			}
+			else {
+				giroCarrusel = 1;
+			}
 
+		}
+		if (giroCarrusel == 1) {
+			if (rotaCarrusel > 0) {
+				rotaCarrusel -= 0.5 * deltaTime;
+			}
+			else {
+				giroCarrusel = 0;
+			}
+		}
 
+		if (direccionCarrusel == 0)
+		{
+			if (posXcarrusel < 20.0)
+			{
+				posXcarrusel += 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 1;
+			}
+		}
+		if (direccionCarrusel == 1)
+		{
+			if (posZcarrusel < 20.0)
+			{
+				posZcarrusel += 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 2;
+			}
+		}
+		if (direccionCarrusel == 2)
+		{
+			if (posXcarrusel > 0.0)
+			{
+				posXcarrusel -= 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 3;
+			}
+		}
+		if (direccionCarrusel == 3)
+		{
+			if (posZcarrusel > 0.0)
+			{
+				posZcarrusel -= 0.05 * deltaTime;
+			}
+			else {
+				direccionCarrusel = 0;
+			}
+		}
+	
+		offset += 2.0 * deltaTime;
+		desplYcarrusel = 0.3 * sin(offset * toRadians);
+
+		offset2 += 2.0 * deltaTime;
+		desplYcarrusel2 = 0.3 * cos(offset2 * toRadians);
+
+		animacionCarrusel = glm::vec3(posXcarrusel, 0, posZcarrusel);
+		
+		//MODELO CARROUSEL
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-110.0f, 0.0f, -90.0f) + animacionCarrusel);
+		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		auxiliar2 = model;
+		model = glm::rotate(model, 0 - rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Carrusel.RenderModel();
+		//1
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f , 0.0f + desplYcarrusel));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo1.RenderModel();
+
+		//2
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel2));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo2.RenderModel();
+
+		////3 rotar
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo3.RenderModel();
+
+		////4
+		model = glm::mat4(1.0);
+		model = auxiliar2;
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f + desplYcarrusel2));
+		model = glm::rotate(model, 0 + rotaCarrusel * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Caballo4.RenderModel();
 
 		//MESA Y SILLAS
 		model = glm::mat4(1.0);
@@ -602,7 +824,7 @@ int main()
 		MesaSilla.RenderModel();
 		//MESA Y SILLAS
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-250.0f, 0.0f, -60.0f));
+		model = glm::translate(model, glm::vec3(-245.0f, 0.0f, -60.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -622,46 +844,71 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		MesaSilla.RenderModel();
 
-		//MODELO CARROUSEL
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.0f, 0.0f, -80.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		auxiliar2 = model;
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Carrusel.RenderModel();
-		//1
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo1.RenderModel();
-		//2
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo2.RenderModel();
-		
-		//3 rotar 180 en Y, -6.3Z
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo3.RenderModel();
-		//4
-		model = glm::mat4(1.0);
-		model = auxiliar2;
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Caballo4.RenderModel();
 
-
-
+		//ANIMACION AVATAR
+		if (direccionAvatar == 0)
+		{
+			if (posZavatar < 53.0)
+			{
+				posZavatar += 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -90);
+				direccionAvatar = 1;
+			}
+		}
+		if (direccionAvatar == 1)
+		{
+			if (posXavatar > -83.0)
+			{
+				posXavatar -= 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -180);
+				direccionAvatar = 2;
+			}
+		}
+		if (direccionAvatar == 2)
+		{
+			if (posZavatar > 0.0)
+			{
+				posZavatar -= 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar -= 0.1;
+				} while (rotaAvatar >= -270);
+				direccionAvatar = 3;
+			}
+		}
+		if (direccionAvatar == 3)
+		{
+			if (posXavatar < 0.0)
+			{
+				posXavatar += 0.05 * deltaTime;
+			}
+			else {
+				do
+				{
+					rotaAvatar += 0.1;
+				} while (rotaAvatar <= 0);
+				direccionAvatar = 0;
+			}
+		}
+		animacionAvatar = glm::vec3(posXavatar, 0, posZavatar);
 
 		//Renderizado AVATAR
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -110.0f));
+		model = glm::translate(model, glm::vec3(-180.0f, 0.0f, -100.0f) + animacionAvatar);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.5f));
-		//model = glm::rotate(model, 40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 0 + rotaAvatar * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		auxiliar = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		TroncoAvatar.RenderModel();
@@ -687,10 +934,31 @@ int main()
 		//model = glm::rotate(model, 40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
-		
-	
-	
 
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 32.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador1.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 120.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador2.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-140.0f, 0.0f, 50.0f));
+		model = glm::scale(model, glm::vec3(4.5f, 8.5f, 5.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puesto.RenderModel();
 
 		glUseProgram(0);
 
