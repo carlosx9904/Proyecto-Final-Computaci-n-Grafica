@@ -1,5 +1,6 @@
 /*
 Proyecto Final Computacion Grafica e interaccion Humano Computadora
+TOVAR HERRERA CARLOS EDUARDO
 */
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
@@ -234,33 +235,28 @@ int main()
 
 	MesaSilla = Model();
 	MesaSilla.LoadModel("Models/mesa_silla.obj");
-
+	//Modelos para mostradores y puesto
 	mostrador1 = Model();
 	mostrador1.LoadModel("Models/mostradorWal.obj");
 	mostrador2 = Model();
 	mostrador2.LoadModel("Models/mostradorLiv.obj");
-
 	puesto = Model();
 	puesto.LoadModel("Models/puesto.obj");
 
-	//CARGAR MODELOS
+	//CARGAR MODELOS VATAR
 	TroncoAvatar = Model();
 	TroncoAvatar.LoadModel("Models/tronco_avatar.obj");
-
 	BDerechoAvatar = Model();
 	BDerechoAvatar.LoadModel("Models/brazo_derecho_avatar.obj");
-
 	BIzquierdoAvatar = Model();
 	BIzquierdoAvatar.LoadModel("Models/brazo_izquierdo_avatar.obj");
-
 	PIzquierdaAvatar = Model();
 	PIzquierdaAvatar.LoadModel("Models/pierna_izquierda_avatar.obj");
-
 	PDerechaAvatar = Model();
 	PDerechaAvatar.LoadModel("Models/pierna_derecha_avatar.obj");
 
 
-
+	//SKYBOX DE NOCHE
 	std::vector<std::string> skyboxFacesN;
 	skyboxFacesN.push_back("Textures/Skybox/izquierda_noche.tga");
 	skyboxFacesN.push_back("Textures/Skybox/derecha_noche.tga");
@@ -268,7 +264,7 @@ int main()
 	skyboxFacesN.push_back("Textures/Skybox/arriba_noche.tga");
 	skyboxFacesN.push_back("Textures/Skybox/atras_noche.tga");
 	skyboxFacesN.push_back("Textures/Skybox/frente_noche.tga");
-
+	//SKYBOX DE DIA
 	std::vector<std::string> skyboxFaces;
 	skyboxFaces.push_back("Textures/Skybox/izquierda_dia.tga");
 	skyboxFaces.push_back("Textures/Skybox/derecha_dia.tga");
@@ -290,7 +286,7 @@ int main()
 		0.3f, 0.3f,
 		0.0f, 0.0f, -1.0f);
 
-	//LUCES PUNTUALES
+	//LUCES PUNTUALES prenden en la noche
 	unsigned int pointLightCount = 0;
 	
 	pointLights[0] = PointLight(0.0f, 1.0f, 1.0f,
@@ -323,7 +319,7 @@ int main()
 		1.0f, 0.002f, 0.002f);
 	pointLightCount++;
 
-	//LUCES SPOTLIGHT
+	//LUCES SPOTLIGHT luces de teclado 
 	unsigned int spotLightCount = 0;
 	
 	spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f,
@@ -395,25 +391,25 @@ int main()
 	int camara = 0;
 
 	
-	float posXavatar = 0.0f;
-	float posZavatar = 0.0f;
-	float rotaAvatar = 0.0f;
-	int direccionAvatar = 0;
+	float posXavatar = 0.0f; //Controla el mov en X del avatar
+	float posZavatar = 0.0f; //Controla el mov en Z del avatar
+	float rotaAvatar = 0.0f; //Controla el rotacion del avatar
+	int direccionAvatar = 0; //Bandera para la direccion de avatar
 
-	float giroPuerta1 = 0.0f;
+	float giroPuerta1 = 0.0f; //Bandera animacion puerta
 
-	float muevePuertaP = 0.0f;
-	float escalaXP = 0.0f;
+	float muevePuertaP = 0.0f; //Variable para trasladar puerta principal
+	float escalaXP = 0.0f;	//Variable para escalar puerta principal
 
-	float rotaCarrusel = 0.0f;
-	int giroCarrusel = 0;
-	int direccionCarrusel = 0;
-	float posXcarrusel = 0.0f;
-	float posZcarrusel = 0.0f;
+	float rotaCarrusel = 0.0f; //Rotacion para carrusel y animales
+	int giroCarrusel = 0;		//Bandera para rotacion
+	int direccionCarrusel = 0; //Bandera mov de carrusel
+	float posXcarrusel = 0.0f; //Mov de carrusel en X
+	float posZcarrusel = 0.0f; //Mov de carrusel en Z
 
-	float desplYcarrusel = 0.0f;
+	float desplYcarrusel = 0.0f; //Sube y baja animales
 	float offset = 0.0f;
-	float desplYcarrusel2 = 0.0f;
+	float desplYcarrusel2 = 0.0f; //Sube y baja animales
 	float offset2 = 0.0f;
 
 
@@ -935,23 +931,19 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PDerechaAvatar.RenderModel();
 
-
+		//MODELO MOSTRADOR WALM
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 32.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador1.RenderModel();
-
+		//MODELO MOSTRADOR LIV
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 120.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador2.RenderModel();
-
+		//MODELO PUERTO
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-140.0f, 0.0f, 50.0f));
 		model = glm::scale(model, glm::vec3(4.5f, 8.5f, 5.0f));
