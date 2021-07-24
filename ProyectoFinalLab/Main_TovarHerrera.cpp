@@ -70,6 +70,7 @@ Model PDerechaAvatar;
 
 Model mostrador1;
 Model mostrador2;
+Model puesto;
 
 Skybox skybox;
 Skybox skybox2;
@@ -238,6 +239,9 @@ int main()
 	mostrador1.LoadModel("Models/mostradorWal.obj");
 	mostrador2 = Model();
 	mostrador2.LoadModel("Models/mostradorLiv.obj");
+
+	puesto = Model();
+	puesto.LoadModel("Models/puesto.obj");
 
 	//CARGAR MODELOS
 	TroncoAvatar = Model();
@@ -767,7 +771,6 @@ int main()
 		offset2 += 2.0 * deltaTime;
 		desplYcarrusel2 = 0.3 * cos(offset2 * toRadians);
 
-		printf("%f ++\n ", desplYcarrusel);
 		animacionCarrusel = glm::vec3(posXcarrusel, 0, posZcarrusel);
 		
 		//MODELO CARROUSEL
@@ -948,6 +951,14 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador2.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-140.0f, 0.0f, 50.0f));
+		model = glm::scale(model, glm::vec3(4.5f, 8.5f, 5.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puesto.RenderModel();
 
 		glUseProgram(0);
 
