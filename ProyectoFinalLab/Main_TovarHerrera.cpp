@@ -5,6 +5,7 @@ TOVAR HERRERA CARLOS EDUARDO
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
+
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -17,6 +18,11 @@ TOVAR HERRERA CARLOS EDUARDO
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
+
+#include <iostream>
+#include <irrKlang.h>
+using namespace irrklang;
+
 
 //ARCHIVOS DE CABECERA
 #include "Window.h"
@@ -187,7 +193,13 @@ void CreateShaders()
 	shaderList.push_back(*shader1);
 }
 
-
+//OBJETOS DE AUDIO
+//audio
+ISoundEngine* sonido = createIrrKlangDevice();
+ISound* sonidoAmbiente = sonido->play2D("ambiente1.wav", true, true, false, ESM_AUTO_DETECT, false);
+ISound* sonidoAmbienteDia = sonido->play2D("ambiente2.wav", true, true, false, ESM_AUTO_DETECT, false);
+ISound* sonidoPuertaAbre = sonido->play2D("puerta1.mp3", false, true, false, ESM_AUTO_DETECT, true);
+ISound* sonidoPuerta = sonido->play2D("puerta1.wav", false, true, false, ESM_AUTO_DETECT, true);
 
 int main()
 {
@@ -201,9 +213,8 @@ int main()
 	camera = Camera(glm::vec3(-50.0f, 0.0f, 180.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
 	cameraComida = Camera(glm::vec3(-260.0f, 20.0f, -65.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
 	cameraCarrusel = Camera(glm::vec3(-115.0f, 20.0f, 90.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.0f, 0.3f);
-
-
-
+	
+	
 	//CARGAR TEXTURAS
 	pisoTexture = Texture("Textures/piso_pr.tga");
 	pisoTexture.LoadTextureA();
@@ -411,7 +422,7 @@ int main()
 	float offset = 0.0f;
 	float desplYcarrusel2 = 0.0f; //Sube y baja animales
 	float offset2 = 0.0f;
-
+	
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -420,6 +431,7 @@ int main()
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
+
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -443,6 +455,9 @@ int main()
 
 		//CAMBIO DE SKYBOX
 		if (dia == 1) { // Comienza siendo dia
+			// MANDAR A LLAMAR AUDIO DE NOCHE
+			sonidoAmbiente->setIsPaused(true);
+			sonidoAmbienteDia->setIsPaused(false);
 			if (intervaloSkybox < 300) { //Cuenta hasta llegar a 300
 				if (mainWindow.camaraCom() == 0) {
 					skybox.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
@@ -460,6 +475,9 @@ int main()
 			}
 		}
 		if (dia == 0) { // Cambia a noche
+			// MANDAR A LLAMAR AUDIO DE NOCHE
+			sonidoAmbiente->setIsPaused(false);
+			sonidoAmbienteDia->setIsPaused(true);
 			if (intervaloSkybox > 0) {
 				if (mainWindow.camaraCom() == 0) {
 					skybox2.DrawSkybox(cameraComida.calculateViewMatrix(), projection);
@@ -627,26 +645,34 @@ int main()
 		//Animacion sencilla Puerta principal
 		if (mainWindow.puertaPrin() == true) {
 			if (muevePuertaP < 30 ) {
+				sonidoPuerta->setIsPaused(false);
 				muevePuertaP += 0.5 * deltaTime;
 				if (escalaXP < 4) {
 					escalaXP += 0.4 * deltaTime;
 				}
 			}
+			else {
+				sonidoPuerta->setIsPaused(true);
+			}
 		}
 		if (mainWindow.puertaPrin() == false) {
 			if (muevePuertaP > 0 ) {
+				sonidoPuerta->setIsPaused(false);
 				muevePuertaP -= 0.5 * deltaTime;
 				if (escalaXP > 0) {
 					escalaXP -= 0.4 * deltaTime;
 				}
 			}
+			else {
+				sonidoPuerta->setIsPaused(true);
+			}
 		}
 
 		//puerta Principal
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-121.0f + muevePuertaP, -1.15f, 140.5f));
+		model = glm::translate(model, glm::vec3(-121.0f + muevePuertaP, -1.15f, 140.8f));
 		model = glm::scale(model, glm::vec3(9.5f - escalaXP, 14.0f, 15.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		PuertaP.RenderModel();
@@ -719,47 +745,6 @@ int main()
 				giroCarrusel = 0;
 			}
 		}
-
-		if (direccionCarrusel == 0)
-		{
-			if (posXcarrusel < 20.0)
-			{
-				posXcarrusel += 0.05 * deltaTime;
-			}
-			else {
-				direccionCarrusel = 1;
-			}
-		}
-		if (direccionCarrusel == 1)
-		{
-			if (posZcarrusel < 20.0)
-			{
-				posZcarrusel += 0.05 * deltaTime;
-			}
-			else {
-				direccionCarrusel = 2;
-			}
-		}
-		if (direccionCarrusel == 2)
-		{
-			if (posXcarrusel > 0.0)
-			{
-				posXcarrusel -= 0.05 * deltaTime;
-			}
-			else {
-				direccionCarrusel = 3;
-			}
-		}
-		if (direccionCarrusel == 3)
-		{
-			if (posZcarrusel > 0.0)
-			{
-				posZcarrusel -= 0.05 * deltaTime;
-			}
-			else {
-				direccionCarrusel = 0;
-			}
-		}
 	
 		offset += 2.0 * deltaTime;
 		desplYcarrusel = 0.3 * sin(offset * toRadians);
@@ -771,7 +756,7 @@ int main()
 		
 		//MODELO CARROUSEL
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-110.0f, 0.0f, -90.0f) + animacionCarrusel);
+		model = glm::translate(model, glm::vec3(-100.0f, 0.0f, -80.0f) + animacionCarrusel);
 		model = glm::scale(model, glm::vec3(3.0f, 2.5f, 3.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		auxiliar2 = model;
