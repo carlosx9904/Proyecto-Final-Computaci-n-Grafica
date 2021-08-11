@@ -198,7 +198,6 @@ void CreateShaders()
 ISoundEngine* sonido = createIrrKlangDevice();
 ISound* sonidoAmbiente = sonido->play2D("ambiente1.wav", true, true, false, ESM_AUTO_DETECT, false);
 ISound* sonidoAmbienteDia = sonido->play2D("ambiente2.wav", true, true, false, ESM_AUTO_DETECT, false);
-ISound* sonidoPuertaAbre = sonido->play2D("puerta1.mp3", false, true, false, ESM_AUTO_DETECT, true);
 ISound* sonidoPuerta = sonido->play2D("puerta1.wav", false, true, false, ESM_AUTO_DETECT, true);
 
 int main()
